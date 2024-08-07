@@ -1,0 +1,22 @@
+.filter-container {
+  padding: 24px;
+  min-width: 320px;
+}
+
+.filter-container .MuiDivider-root {
+  margin: 8px 0px;
+}
+
+.filter-container .filter-item {
+  padding-left: 16px;
+  margin-top: 16px;
+}
+
+.filter-container .filter-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.filter-container .filter-actions button {
+  margin-left: 8px;
+}

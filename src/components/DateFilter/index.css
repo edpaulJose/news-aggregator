@@ -1,0 +1,4 @@
+.date-filter-container .MuiInputBase-root,
+.date-filter-container .MuiInputBase-input {
+  cursor: pointer;
+}
