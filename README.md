@@ -37,7 +37,7 @@ VITE_NEWS_API_KEY=your-api-key-here
 VITE_DEFAULT_COUNTRY=us
 ```
 
-### 4. Run the Application
+### 3. Run the Application
 
 Start the development server by running:
 

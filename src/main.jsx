@@ -8,6 +8,8 @@ import './index.css';
 
 import Preloader from './components/PreLoader/index.jsx';
 
+// TODO: Temporarily removed StrictMode, since it affects sideeffects that call api twice.
+//  and I need to limit those calls since the api is limited. 
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>
     <Provider store={store}>
