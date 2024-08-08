@@ -1,21 +1,36 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setLoading as setLoadingSlice } from '../slices/appSlice';
-import { selectIsloading } from '../store';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  setLoading as setLoadingAction,
+  setCountry as setCountryAction,
+} from '../actions/appActions';
+import { selectIsloading, selectCountry } from '../store';
+
+const DEFAULT_COUNTRY = import.meta.env.VITE_DEFAULT_COUNTRY;
 
 export const useApp = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsloading);
+  const country = useSelector(selectCountry);
 
   const setLoading = useCallback(
     (value = false) => {
-      dispatch(setLoadingSlice(value));
+      dispatch(setLoadingAction(value));
+    },
+    [dispatch]
+  );
+
+  const setCountry = useCallback(
+    (country = DEFAULT_COUNTRY) => {
+      dispatch(setCountryAction(country));
     },
     [dispatch]
   );
 
   return {
     isLoading,
-    setLoading
+    setLoading,
+    country,
+    setCountry,
   };
 };

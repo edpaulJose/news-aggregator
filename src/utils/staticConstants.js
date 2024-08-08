@@ -9,7 +9,12 @@ export const DEFAULT_FILTERS = {
   q: null,
   sources: null,
   date: null,
-}
+};
+
+export const DEFAULT_PAGINATION = {
+  currentPage: 1,
+  limit: DEFAULT_SEARCH_LIMIT,
+};
 
 export const COUNTRY_CODES = [
   'ae',
@@ -71,41 +76,31 @@ export const DATE_OPTIONS = [
   {
     code: 'anytime',
     label: 'Anytime',
-    dateTo: null,
-    dateFrom: null
+    to: null,
+    from: null,
   },
   {
     code: 'pastHour',
     label: 'Past Hour',
-    dateTo: new Date().toISOString(),
-    dateFrom: new Date(Date.now() - 60 * 60 * 1000).toISOString() // 1 hour ago
+    to: new Date().toISOString(),
+    from: new Date(Date.now() - 60 * 60 * 1000).toISOString(), // 1 hour ago
   },
   {
     code: 'past24Hours',
     label: 'Past 24 Hours',
-    dateTo: new Date().toISOString(),
-    dateFrom: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString() // 24 hours ago
+    to: new Date().toISOString(),
+    from: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // 24 hours ago
   },
   {
     code: 'pastWeek',
     label: 'Past Week',
-    dateTo: new Date().toISOString(),
-    dateFrom: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days ago
+    to: new Date().toISOString(),
+    from: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days ago
   },
   {
     code: 'pastYear',
     label: 'Past Year',
-    dateTo: new Date().toISOString(),
-    dateFrom: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString() // 365 days ago
-  }
-];
-
-export const CATEGORIES = [
-  { code: 'business', label: 'Business', link: '/business' },
-  { code: 'entertainment', label: 'Entertainment', link: '/entertainment' },
-  { code: 'general', label: 'General', link: '/general' },
-  { code: 'health', label: 'Health', link: '/health' },
-  { code: 'science', label: 'Science', link: '/science' },
-  { code: 'sports', label: 'Sports', link: '/sports' },
-  { code: 'technology', label: 'Technology', link: '/technology' }
+    to: new Date().toISOString(),
+    from: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString(), // 365 days ago
+  },
 ];

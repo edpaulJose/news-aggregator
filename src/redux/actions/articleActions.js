@@ -1,19 +1,23 @@
 import {
   setArticles,
-  setPage,
+  setCurrentPage,
   setLimit,
   setFetchingData,
   setSources,
+  setError
 } from '../slices/articlesSlice';
 import { setLoading } from '../slices/appSlice';
 import {
   fetchArticles,
   fetchTopArticles,
   fetchAllSources,
+  fetchAllArticlesByCategory,
 } from '../../api/newsApi';
 
+const DEFAULT_COUNTRY = import.meta.env.VITE_DEFAULT_COUNTRY;
+
 export const loadTopArticles =
-  ({ currentPage, limit }, noLoading, country) =>
+  ({ currentPage, limit }, noLoading, country = DEFAULT_COUNTRY) =>
   async dispatch => {
     if (!noLoading) dispatch(setLoading(true));
     dispatch(setFetchingData(true));
@@ -23,8 +27,11 @@ export const loadTopArticles =
     );
     if (!error) {
       dispatch(setArticles({ articles, totalPages }));
-      dispatch(setPage(pagination?.currentPage));
+      dispatch(setCurrentPage(pagination?.currentPage));
       dispatch(setLimit(pagination?.limit));
+      dispatch(setError(null));
+    } else {
+      dispatch(setError(error));
     }
 
     if (!noLoading) dispatch(setLoading(false));
@@ -32,45 +39,60 @@ export const loadTopArticles =
   };
 
 export const loadArticles =
-  ({ filter, pagination, noLoading = false }) =>
+  ({ filter, pagination, noLoading = false, country = DEFAULT_COUNTRY }) =>
   async dispatch => {
     if (!noLoading) dispatch(setLoading(true));
     dispatch(setFetchingData(true));
     // const { pagination } = getState();
     let response = {};
     if (filter) {
-      response = await fetchArticles(filter, pagination);
+      response = await fetchArticles({ ...filter, country }, pagination);
     } else {
-      response = await fetchTopArticles(pagination);
+      response = await fetchTopArticles(pagination, country);
     }
 
     if (!response?.error) {
       const { articles, totalPages, pagination } = response;
       dispatch(setArticles({ articles, totalPages }));
-      dispatch(setPage(pagination?.currentPage));
+      dispatch(setCurrentPage(pagination?.currentPage));
       dispatch(setLimit(pagination?.limit));
+      dispatch(setError(null));
+    } else {
+      dispatch(setError(response?.error));
     }
     if (!noLoading) dispatch(setLoading(false));
     dispatch(setFetchingData(false));
   };
 
-// export const loadArticlesWithFilter =
-//   (pagination) =>
-//   async (dispatch, getState) => {
-//     setFetchingData(true);
-//     const { filter } = getState().articles;
-//     dispatch(setFilter(filter));
-//     const { articles, error, totalPages } = await fetchArticles(
-//       filter,
-//       pagination
-//     );
-//     setFetchingData(false);
-//     if (!error) {
-//       dispatch(setArticles({ articles, totalPages }));
-//       dispatch(setPage(pagination?.currentPage));
-//       dispatch(setLimit(pagination?.limit));
-//     }
-//   };
+export const loadTopArticlesByCategory =
+  ({
+    category,
+    pagination,
+    noLoading,
+    otherFilters,
+    country = DEFAULT_COUNTRY,
+  }) =>
+  async dispatch => {
+    if (!noLoading) dispatch(setLoading(true));
+    dispatch(setFetchingData(true));
+
+    const response = await fetchAllArticlesByCategory(category, pagination, {
+      ...otherFilters,
+      country,
+    });
+    if (!response?.error) {
+      const { articles, totalPages, pagination } = response;
+      dispatch(setArticles({ articles, totalPages }));
+      dispatch(setCurrentPage(pagination?.currentPage));
+      dispatch(setLimit(pagination?.limit));
+      dispatch(setError(null));
+    } else {
+      dispatch(setError(response?.error));
+    }
+
+    if (!noLoading) dispatch(setLoading(false));
+    dispatch(setFetchingData(false));
+  };
 
 export const loadAllSources = filter => async dispatch => {
   dispatch(setFetchingData(true));
@@ -78,11 +100,14 @@ export const loadAllSources = filter => async dispatch => {
 
   if (!error) {
     dispatch(setSources(sources));
+    dispatch(setError(null));
+  } else {
+    dispatch(setError(error));
   }
   dispatch(setFetchingData(false));
 };
 
 export const incrementCurrentPage = () => async (dispatch, getState) => {
   const { pagination } = getState();
-  dispatch(setPage(pagination.currentPage + 1));
+  dispatch(setCurrentPage(pagination.currentPage + 1));
 };

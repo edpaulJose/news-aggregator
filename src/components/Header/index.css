@@ -1,3 +1,19 @@
 .upper-header {
   display: flex;
+  margin: 16px 0px;
+  align-items: center;
+}
+
+.lower-header {
+  display: flex;
+  justify-content: center;
+}
+
+.country-select .MuiSelect-select,
+.country-select .MuiSvgIcon-root {
+  color: #fff;
+}
+
+.country-select fieldset, .country-select .MuiOutlinedInput-notchedOutline {
+  border-color: #fff !important;
 }

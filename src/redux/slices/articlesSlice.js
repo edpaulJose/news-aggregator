@@ -15,6 +15,7 @@ const INITIAL_STATE = {
   totalPages: 1,
   fetchingData: false,
   sources: [],
+  error: null,
 };
 
 const articlesSlice = createSlice({
@@ -25,7 +26,7 @@ const articlesSlice = createSlice({
       state.articles = action.payload.articles;
       state.totalPages = action.payload.totalPages;
     },
-    setPage(state, action) {
+    setCurrentPage(state, action) {
       state.pagination.currentPage = action.payload || 1;
     },
     setLimit(state, action) {
@@ -46,17 +47,21 @@ const articlesSlice = createSlice({
     setFilterDate(state, action) {
       state.filter.date = action.payload || INITIAL_STATE.filter.date;
     },
+    setError(state, action) {
+      state.error = action.payload;
+    },
   },
 });
 
 export const {
   setArticles,
-  setPage,
+  setCurrentPage,
   setLimit,
   setFilter,
   setFetchingData,
   setSources,
   setFilterDate,
   addFilter,
+  setError,
 } = articlesSlice.actions;
 export default articlesSlice.reducer;

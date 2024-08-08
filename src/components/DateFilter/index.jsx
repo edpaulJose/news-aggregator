@@ -2,14 +2,17 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Autocomplete, Box, TextField } from '@mui/material';
 
-import { DATE_OPTIONS } from '../../utils/staticConstants';
+// import { DATE_OPTIONS } from '../../utils/staticConstants';
+import { generateOptions } from '../../utils/dateFunctions';
 
 import './index.css';
 
 const DateFilter = ({ id, label = 'Date', value, onChange, fieldResponse }) => {
+  const dateOptions = useMemo(() => generateOptions(new Date()), []);
+
   const valueObj = useMemo(() => {
     if (!value) {
-      return DATE_OPTIONS[0];
+      return dateOptions[0];
     }
     return value;
   }, [value]);
@@ -31,7 +34,7 @@ const DateFilter = ({ id, label = 'Date', value, onChange, fieldResponse }) => {
         isOptionEqualToValue={option => option.code === valueObj.code}
         disablePortal
         id="dateFilter-autocomplete"
-        options={DATE_OPTIONS}
+        options={dateOptions}
         size="small"
         renderInput={params => (
           <TextField
@@ -55,8 +58,8 @@ DateFilter.propTypes = {
   value: PropTypes.shape({
     code: PropTypes.string.isRequired,
     label: PropTypes.string,
-    dateTo: PropTypes.string,
-    dateFrom: PropTypes.string,
+    to: PropTypes.string,
+    from: PropTypes.string,
   }),
   onChange: PropTypes.func,
   fieldResponse: PropTypes.string,

@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   loadArticles as loadArticlesAction,
-  // loadArticlesWithFilter as loadArticlesWithFilterAction,
+  loadTopArticlesByCategory as loadTopArticlesByCategoryAction,
   loadTopArticles as loadTopArticlesAction,
   loadAllSources as loadAllSourcesAction,
   incrementCurrentPage as incrementCurrentPageAction,
@@ -11,6 +11,7 @@ import {
   setFilter as setFilterSlice,
   setFilterDate as setFilterDateSlice,
   addFilter as addFilterSlice,
+  setCurrentPage as setCurrentPageSlice,
 } from '../slices/articlesSlice';
 import {
   selectArticles,
@@ -20,6 +21,8 @@ import {
   selectFilter,
   selectPagination,
   selectSources,
+  selectCountry,
+  selectError,
 } from '../store';
 
 import { isEmptyOrNilArray } from '../../utils/staticFunctions';
@@ -33,28 +36,36 @@ export const useArticles = () => {
   const totalPages = useSelector(selectTotalPages);
   const pagination = useSelector(selectPagination);
   const sources = useSelector(selectSources);
-
-  // Only include valid filters to avoid unecessary values passed to api
-  // const newFilter = useMemo(() => {
-  //   const tempFilter = {...filter};
-  //   if(!tempFilter.date.dateTo) { // dateTo is enough for checking
-  //     tempFilter.date = DATE_OPTIONS
-  //   }
-  //   return tempFilter;
-  // }, [filter]);
+  const country = useSelector(selectCountry);
+  const error = useSelector(selectError);
 
   const loadArticles = useCallback(
     ({ filter, pagination }) => {
-      // dispatch(loadArticlesAction({ filter, pagination }));
+      dispatch(loadArticlesAction({ filter, pagination, country }));
     },
-    [dispatch]
+    [dispatch, country]
   );
 
   const loadTopArticles = useCallback(
     pagination => {
-      // dispatch(loadTopArticlesAction(pagination));
+      dispatch(loadTopArticlesAction(pagination, false, country));
     },
-    [dispatch]
+    [dispatch, country]
+  );
+
+  const loadTopArticlesByCategory = useCallback(
+    ({ category, pagination, noLoading, otherFilters }) => {
+      dispatch(
+        loadTopArticlesByCategoryAction({
+          category,
+          pagination,
+          noLoading,
+          otherFilters,
+          country,
+        })
+      );
+    },
+    [dispatch, country]
   );
 
   const setFilter = useCallback(
@@ -68,12 +79,19 @@ export const useArticles = () => {
   );
 
   const loadAllSources = useCallback(
-    () => dispatch(loadAllSourcesAction({ country: filter?.country || 'us' })),
+    () => dispatch(loadAllSourcesAction()),
     [dispatch, filter]
   );
 
   const incrementCurrentPage = useCallback(
     () => dispatch(incrementCurrentPageAction()),
+    [dispatch]
+  );
+
+  const setCurrentPage = useCallback(
+    currentPage => {
+      dispatch(setCurrentPageSlice(currentPage));
+    },
     [dispatch]
   );
 
@@ -94,7 +112,7 @@ export const useArticles = () => {
     filter,
     currentPage,
     totalPages,
-    // loadArticlesWithFilter,
+    loadTopArticlesByCategory,
     loadArticles,
     loadTopArticles,
     fetchingData,
@@ -106,5 +124,7 @@ export const useArticles = () => {
     isValidFilter,
     setFilterDate,
     addFilter,
+    setCurrentPage,
+    error,
   };
 };

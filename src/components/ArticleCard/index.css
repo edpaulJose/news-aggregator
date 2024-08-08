@@ -1,0 +1,15 @@
+.article-card-container {
+  margin: auto;
+  background: inherit;
+}
+
+.time-author {
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+  text-wrap: nowrap;
+}
+
+.time-author p {
+  font-size: 12px;
+}

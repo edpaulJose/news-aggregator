@@ -7,6 +7,7 @@ import { InputBase, Box } from '@mui/material';
 // import UseDebounce from '../../hooks/useDebounce';
 // redux hooks
 import { useArticles } from '../../redux/hooks/useArticles';
+import { DEFAULT_PAGINATION } from '../../utils/staticConstants';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -47,7 +48,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const SearchBar = ({ id = 'SearchBar' }) => {
-  const { addFilter, filter } = useArticles();
+  const { addFilter, filter, setCurrentPage } = useArticles();
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
@@ -71,12 +72,13 @@ const SearchBar = ({ id = 'SearchBar' }) => {
   const handleKeyDown = event => {
     if (event.key === 'Enter') {
       addFilter({ q: searchTerm });
+      setCurrentPage(DEFAULT_PAGINATION.currentPage);
     }
   };
 
-  const handleBlur = event => {
-    addFilter({ q: event.target.value });
-  };
+  // const handleBlur = event => {
+  //   addFilter({ q: event.target.value });
+  // };
 
   return (
     <Box id={id}>
@@ -85,11 +87,12 @@ const SearchBar = ({ id = 'SearchBar' }) => {
           <SearchIcon />
         </SearchIconWrapper>
         <StyledInputBase
+          id='SearchBar-StyledInputBase'
           placeholder="Search…"
           inputProps={{ 'aria-label': 'search' }}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          onBlur={handleBlur}
+          // onBlur={handleBlur}
           value={searchTerm}
         />
       </Search>

@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const INITIAL_STATE = {
   isLoading: false,
+  country: import.meta.env.VITE_DEFAULT_COUNTRY,
 };
 
 const appSlice = createSlice({
@@ -11,8 +12,11 @@ const appSlice = createSlice({
     setLoading(state, action) {
       state.isLoading = action.payload;
     },
+    setCountry(state, action) {
+      state.country = action.payload;
+    },
   },
 });
 
-export const { setLoading } = appSlice.actions;
+export const { setLoading, setCountry } = appSlice.actions;
 export default appSlice.reducer;

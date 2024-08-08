@@ -1,6 +1,13 @@
 import { lazy } from 'react';
+import { isEqualIgnoreCase } from './staticFunctions';
 
 export const CATEGORIES = [
+  {
+    code: 'home',
+    label: 'Home',
+    link: '/home',
+    component: lazy(() => import('../pages/Home')),
+  },
   {
     code: 'business',
     label: 'Business',
@@ -44,3 +51,10 @@ export const CATEGORIES = [
     component: lazy(() => import('../pages/Technology')),
   },
 ];
+
+export const getIndexByLink = (link) => {
+  const index = CATEGORIES.findIndex(category =>
+    isEqualIgnoreCase(category.link, link)
+  )
+  return index === -1 ? null : index;
+};

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -13,21 +14,31 @@ import {
 } from '@mui/material';
 
 // utils
-import { DEFAULT_FILTERS } from '../../utils/staticConstants';
-import { isEmptyOrNilArray } from '../../utils/staticFunctions';
+import { DEFAULT_FILTERS, DEFAULT_PAGINATION } from '../../utils/staticConstants';
+import {
+  isEmptyOrNilArray,
+  isEqualIgnoreCase,
+} from '../../utils/staticFunctions';
 
 // Custom components
 import LoadOnOpenAutocomplete from '../LoadOnOpenAutcomplete';
 import DateFilter from '../DateFilter';
 
 // redux
-import { useArticles } from '../../redux/hooks/useArticles';
+import { useArticles } from '../../redux/hooks';
 
 import './index.css';
 
 const FilterPopper = ({ id, open = false, onClose, anchorEl }) => {
-  const { loadAllSources, sources, filter, setFilter } = useArticles();
+  const { loadAllSources, sources, filter, setFilter, setCurrentPage } = useArticles();
+  const { pathname } = useLocation();
   const [newFilter, setNewFilter] = useState();
+
+  const showSourceOptions = useMemo(
+    () =>
+      isEqualIgnoreCase(pathname, '/') || isEqualIgnoreCase(pathname, '/home'),
+    [pathname]
+  );
 
   const isValidFilter = useMemo(
     () => newFilter?.q || !isEmptyOrNilArray(newFilter?.sources),
@@ -64,6 +75,7 @@ const FilterPopper = ({ id, open = false, onClose, anchorEl }) => {
   const handleChangeFilter = useCallback(
     event => {
       setFilter(newFilter);
+      setCurrentPage(DEFAULT_PAGINATION.currentPage);
       if (onClose) {
         onClose(event);
       }
@@ -71,12 +83,9 @@ const FilterPopper = ({ id, open = false, onClose, anchorEl }) => {
     [newFilter, onClose]
   );
 
-  const handleClear = useCallback(
-    event => {
-      setFilter(DEFAULT_FILTERS);
-    },
-    [onClose]
-  );
+  const handleClear = useCallback(() => {
+    setFilter(DEFAULT_FILTERS);
+  }, [onClose]);
 
   return (
     <Box id={id}>
@@ -87,7 +96,7 @@ const FilterPopper = ({ id, open = false, onClose, anchorEl }) => {
         placement="bottom-start"
         transition
         disablePortal
-        style={{ zIndex: 1300 }}
+        sx={{ zIndex: 1300 }}
       >
         {({ TransitionProps, placement }) => (
           <Grow
@@ -117,18 +126,20 @@ const FilterPopper = ({ id, open = false, onClose, anchorEl }) => {
                       variant="standard"
                     />
                   </Box>
-                  <Box className="filter-item">
-                    <LoadOnOpenAutocomplete
-                      id="FilterPopper-LoadOnOpenAutocomplete"
-                      options={sources}
-                      loadOptions={handleLoadOptions}
-                      multiple
-                      onChange={handleChange}
-                      label="Sources"
-                      value={newFilter?.sources || []}
-                      fieldResponse="sources"
-                    />
-                  </Box>
+                  {showSourceOptions && (
+                    <Box className="filter-item">
+                      <LoadOnOpenAutocomplete
+                        id="FilterPopper-LoadOnOpenAutocomplete"
+                        options={sources}
+                        loadOptions={handleLoadOptions}
+                        multiple
+                        onChange={handleChange}
+                        label="Sources"
+                        value={newFilter?.sources || []}
+                        fieldResponse="sources"
+                      />
+                    </Box>
+                  )}
                   <Box className="filter-item">
                     <DateFilter
                       id="FilterPopper-DateFilter"

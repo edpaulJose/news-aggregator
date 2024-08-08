@@ -1,11 +1,22 @@
 import React from 'react';
+import { Box } from '@mui/material';
 
-import { Box, Typography } from '@mui/material';
+// hooks
+import { useCategoryPages } from '../../hooks';
+
+// custom components
+import ArticleCards from '../../components/ArticleCards';
 
 const Health = () => {
+  const { loadMore } = useCategoryPages(4);
+
   return (
     <Box>
-      <Typography variant="h1">This is Health</Typography>
+      <ArticleCards
+        id="Health-ArticleCards"
+        loadMoreArticles={loadMore}
+        title="Health"
+      />
     </Box>
   );
 };
