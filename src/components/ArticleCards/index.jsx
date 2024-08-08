@@ -1,4 +1,4 @@
-import React, {
+import {
   useState,
   useEffect,
   useRef,
@@ -59,7 +59,7 @@ const ArticleCards = ({ id, loadMoreArticles, title = 'Title' }) => {
       });
       if (node) observer.current.observe(node);
     },
-    [currentPage, loadMoreArticles, articles]
+    [currentPage, loadMoreArticles, articles, fetchingData]
   );
 
   useEffect(() => {

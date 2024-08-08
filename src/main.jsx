@@ -9,7 +9,7 @@ import './index.css';
 import Preloader from './components/PreLoader/index.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
         <Suspense fallback={<Preloader isLoading={true} />}>
@@ -17,5 +17,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         </Suspense>
       </BrowserRouter>
     </Provider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

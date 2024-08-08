@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '../Header';
 import Preloader from '../PreLoader';
 import WithRoot from '../../hoc/withroot';

@@ -29,7 +29,7 @@ const fetchArticles = async (
       newPayload.from = payload.date.from;
     }
     // TODO: country is not supported for everything enpoint
-    if(newPayload.country) {
+    if (newPayload.country) {
       delete newPayload.country;
     }
 

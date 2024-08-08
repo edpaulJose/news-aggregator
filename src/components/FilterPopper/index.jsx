@@ -14,7 +14,10 @@ import {
 } from '@mui/material';
 
 // utils
-import { DEFAULT_FILTERS, DEFAULT_PAGINATION } from '../../utils/staticConstants';
+import {
+  DEFAULT_FILTERS,
+  DEFAULT_PAGINATION,
+} from '../../utils/staticConstants';
 import {
   isEmptyOrNilArray,
   isEqualIgnoreCase,
@@ -30,7 +33,8 @@ import { useArticles } from '../../redux/hooks';
 import './index.css';
 
 const FilterPopper = ({ id, open = false, onClose, anchorEl }) => {
-  const { loadAllSources, sources, filter, setFilter, setCurrentPage } = useArticles();
+  const { loadAllSources, sources, filter, setFilter, setCurrentPage } =
+    useArticles();
   const { pathname } = useLocation();
   const [newFilter, setNewFilter] = useState();
 
@@ -80,12 +84,12 @@ const FilterPopper = ({ id, open = false, onClose, anchorEl }) => {
         onClose(event);
       }
     },
-    [newFilter, onClose]
+    [newFilter, onClose, setCurrentPage, setFilter]
   );
 
   const handleClear = useCallback(() => {
     setFilter(DEFAULT_FILTERS);
-  }, [onClose]);
+  }, [setFilter]);
 
   return (
     <Box id={id}>

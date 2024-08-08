@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
@@ -87,7 +87,7 @@ const SearchBar = ({ id = 'SearchBar' }) => {
           <SearchIcon />
         </SearchIconWrapper>
         <StyledInputBase
-          id='SearchBar-StyledInputBase'
+          id="SearchBar-StyledInputBase"
           placeholder="Search…"
           inputProps={{ 'aria-label': 'search' }}
           onChange={handleChange}

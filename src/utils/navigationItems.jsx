@@ -52,9 +52,9 @@ export const CATEGORIES = [
   },
 ];
 
-export const getIndexByLink = (link) => {
+export const getIndexByLink = link => {
   const index = CATEGORIES.findIndex(category =>
     isEqualIgnoreCase(category.link, link)
-  )
+  );
   return index === -1 ? null : index;
 };

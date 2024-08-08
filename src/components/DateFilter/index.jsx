@@ -15,7 +15,7 @@ const DateFilter = ({ id, label = 'Date', value, onChange, fieldResponse }) => {
       return dateOptions[0];
     }
     return value;
-  }, [value]);
+  }, [value, dateOptions]);
 
   const handleChange = (event, value) => {
     if (onChange) {

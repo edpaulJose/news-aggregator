@@ -4,7 +4,7 @@ import {
   setLimit,
   setFetchingData,
   setSources,
-  setError
+  setError,
 } from '../slices/articlesSlice';
 import { setLoading } from '../slices/appSlice';
 import {
@@ -70,7 +70,6 @@ export const loadTopArticlesByCategory =
     pagination,
     noLoading,
     otherFilters,
-    country = DEFAULT_COUNTRY,
   }) =>
   async dispatch => {
     if (!noLoading) dispatch(setLoading(true));
@@ -78,7 +77,6 @@ export const loadTopArticlesByCategory =
 
     const response = await fetchAllArticlesByCategory(category, pagination, {
       ...otherFilters,
-      country,
     });
     if (!response?.error) {
       const { articles, totalPages, pagination } = response;

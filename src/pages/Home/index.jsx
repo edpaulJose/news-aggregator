@@ -5,8 +5,10 @@ import { Box } from '@mui/material';
 import ArticleCards from '../../components/ArticleCards';
 // redux
 import { useArticles } from '../../redux/hooks/useArticles';
+import { useApp } from '../../redux/hooks';
 
 const Home = () => {
+  const { country } = useApp();
   const { loadArticles, filter, isValidFilter } = useArticles();
 
   const fetchArticles = useCallback(
@@ -16,15 +18,17 @@ const Home = () => {
           filter,
           pagination: { currentPage: newCurrentPage || 1 },
           noLoading,
+          country
         });
       } else {
         loadArticles({
           pagination: { currentPage: newCurrentPage },
           noLoading,
+          country
         });
       }
     },
-    [filter, loadArticles, isValidFilter]
+    [filter, loadArticles, isValidFilter, country]
   );
 
   useEffect(() => {

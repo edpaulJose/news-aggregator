@@ -8,6 +8,7 @@ import { CATEGORIES } from '../utils/navigationItems';
 import { DEFAULT_FILTERS } from '../utils/staticConstants';
 
 const useCategoryPages = (categoryIndex = 1) => {
+  const { country } = useApp();
   const {
     loadTopArticlesByCategory,
     setFilter,
@@ -15,7 +16,6 @@ const useCategoryPages = (categoryIndex = 1) => {
     filter,
     currentPage,
   } = useArticles();
-  const { country } = useApp();
 
   const [firstRender, setFirstRender] = useState(false);
 
@@ -24,7 +24,7 @@ const useCategoryPages = (categoryIndex = 1) => {
       loadTopArticlesByCategory({
         category: CATEGORIES[categoryIndex].code,
         pagination: { currentPage },
-        otherFilters: { country, ...filter },
+        otherFilters: { ...filter, country },
       });
     } else if (!firstRender) {
       setFilter(DEFAULT_FILTERS);
@@ -40,8 +40,9 @@ const useCategoryPages = (categoryIndex = 1) => {
     filter,
     firstRender,
     currentPage,
-    country,
     categoryIndex,
+    setFilter,
+    country,
   ]);
 
   const handleLoadMore = useCallback(
@@ -50,7 +51,7 @@ const useCategoryPages = (categoryIndex = 1) => {
         loadTopArticlesByCategory({
           category: CATEGORIES[categoryIndex].code,
           pagination: { currentPage: newCurrentPage },
-          otherFilters: { country, ...filter },
+          otherFilters: { ...filter, country },
         });
       } else {
         loadTopArticlesByCategory({
@@ -60,7 +61,7 @@ const useCategoryPages = (categoryIndex = 1) => {
         });
       }
     },
-    [isValidFilter, loadTopArticlesByCategory, country, filter, categoryIndex]
+    [isValidFilter, loadTopArticlesByCategory, filter, categoryIndex, country]
   );
 
   return {

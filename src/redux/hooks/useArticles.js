@@ -36,21 +36,20 @@ export const useArticles = () => {
   const totalPages = useSelector(selectTotalPages);
   const pagination = useSelector(selectPagination);
   const sources = useSelector(selectSources);
-  const country = useSelector(selectCountry);
   const error = useSelector(selectError);
 
   const loadArticles = useCallback(
-    ({ filter, pagination }) => {
-      dispatch(loadArticlesAction({ filter, pagination, country }));
+    ({ filter, pagination, country, noLoading }) => {
+      dispatch(loadArticlesAction({ filter, pagination, country, noLoading }));
     },
-    [dispatch, country]
+    [dispatch]
   );
 
   const loadTopArticles = useCallback(
-    pagination => {
+    (pagination, country) => {
       dispatch(loadTopArticlesAction(pagination, false, country));
     },
-    [dispatch, country]
+    [dispatch]
   );
 
   const loadTopArticlesByCategory = useCallback(
@@ -61,11 +60,10 @@ export const useArticles = () => {
           pagination,
           noLoading,
           otherFilters,
-          country,
         })
       );
     },
-    [dispatch, country]
+    [dispatch]
   );
 
   const setFilter = useCallback(
@@ -80,7 +78,7 @@ export const useArticles = () => {
 
   const loadAllSources = useCallback(
     () => dispatch(loadAllSourcesAction()),
-    [dispatch, filter]
+    [dispatch]
   );
 
   const incrementCurrentPage = useCallback(

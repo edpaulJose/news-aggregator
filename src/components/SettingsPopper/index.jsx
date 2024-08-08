@@ -1,4 +1,3 @@
-import { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -51,11 +50,11 @@ const SettingsPopper = ({ id, open = false, onClose, anchorEl }) => {
                 <Box className="settings-container">
                   <Box sx={{ minWidth: '100px' }}>
                     <Select
-                      id='settingsPopper-Select'
+                      id="settingsPopper-Select"
                       value={country}
                       label=""
-                      size='small'
-                      onChange={(event) => setCountry(event.target.value)}
+                      size="small"
+                      onChange={event => setCountry(event.target.value)}
                     >
                       {COUNTRY_CODES.map(code => (
                         <MenuItem key={code} value={code}>

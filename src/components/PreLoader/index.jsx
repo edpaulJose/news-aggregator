@@ -1,9 +1,8 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
 
-const FullWidthLoader = styled('div')(({ theme }) => ({
+const FullWidthLoader = styled('div')(() => ({
   width: '100%',
   height: '100%',
   position: 'absolute',
